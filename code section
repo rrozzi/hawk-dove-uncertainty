@@ -48,6 +48,7 @@ mbests-own [
 
 to setup
   clear-all
+  ;set payoff-matrix read-from-string payoffs
   set c 1
   set conf one-of [100 200 300 400 500 600 700 800 900]
   create-conformists conf [set strategy 0]
@@ -96,6 +97,29 @@ to go
       [create-mbests 0.1 * n-of-players [set strategy 0]
         ask n-of (random (0.1 * n-of-players + 1)) mbests [set strategy 1]]]
   ]]
+  test-1
+  test-2
+; procedure to determine hitting time of equilibrium, comment it out when not caring about it (intuitively, the code stops when the system is close by 0.02 points to a NE)
+;  if G_1_like = -1
+;  [ifelse conf = 0
+;  [if count turtles with [strategy = 0] / n-of-players < v_2 + 0.02 and count turtles with [strategy = 0] / n-of-players > v_2 - 0.02 [stop]]
+;    [(ifelse
+;      count turtles with [strategy = 0] / n-of-players < v_2 + 0.02 and count turtles with [strategy = 0] / n-of-players > v_2 - 0.02 [stop]
+;      count turtles with [strategy = 0] / n-of-players < conf / n-of-players + 0.02 and count turtles with [strategy = 0] / n-of-players > conf / n-of-players - 0.02 [stop]
+;      count turtles with [strategy = 0] / n-of-players < (n-of-players - conf) / n-of-players + 0.02 and count turtles with [strategy = 0] / n-of-players > (n-of-players - conf) / n-of-players - 0.02 [stop]
+;      [tick])
+;    ]
+;  ]
+;  if G_1_like = 10
+;  [ifelse conf = 0
+;  [if count turtles with [strategy = 0] / n-of-players < v_1 + 0.02 and count turtles with [strategy = 0] / n-of-players > v_1 - 0.02 [stop]]
+;    [(ifelse
+;      count turtles with [strategy = 0] / n-of-players < v_1 + 0.02 and count turtles with [strategy = 0] / n-of-players > v_1 - 0.02 [stop]
+;      count turtles with [strategy = 0] / n-of-players < conf / n-of-players + 0.02 and count turtles with [strategy = 0] / n-of-players > conf / n-of-players - 0.02 [stop]
+;      count turtles with [strategy = 0] / n-of-players < (n-of-players - conf) / n-of-players + 0.02 and count turtles with [strategy = 0] / n-of-players > (n-of-players - conf) / n-of-players - 0.02 [stop]
+;      [tick])
+;    ]
+;  ]
   tick
 end
 
@@ -162,6 +186,9 @@ to conform
     [set strategy 1]
     ]
   ]
+
+  ;if max (list nof0 nof1 nof2) = nof1
+  ;if max (list nof0 nof1 nof2) = nof2 [set strategy 2]
 end
 
 to asses-fitness
@@ -191,4 +218,16 @@ to asses-fitness
     ]
     [set payoff_m -2]
   ]
+end
+
+to test-1
+  ifelse pG_1 <= G_1_like
+  [set test_1 0]
+  [set test_1 1]
+end
+
+to test-2
+  ifelse pG_1 <= G_1_like
+  [set test_2 0]
+  [set test_2 1]
 end
